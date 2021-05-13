@@ -38,17 +38,28 @@ export default class Items extends Component {
     // );
 
     // 이벤트 버블링 - 모든 이벤트를 this.$target에 등록
-    this.$target.addEventListener("click", ({ target }) => {
+    // this.$target.addEventListener("click", ({ target }) => {
+    //   const items = [...this.$state.items];
+
+    //   if (target.classList.contains("addBtn")) {
+    //     this.setState({ items: [...items, `item${items.length + 1}`] });
+    //   }
+
+    //   if (target.classList.contains("deleteBtn")) {
+    //     items.splice(target.dataset.index, 1);
+    //     this.setState({ items });
+    //   }
+    // });
+
+    // 이벤트 버블링 추상화된 메서드 사용
+    this.addEvent("click", ".addBtn", () => {
+      const { items } = this.$state;
+      this.setState({ items: [...items, `item${items.length + 1}`] });
+    });
+    this.addEvent("click", ".deleteBtn", ({ target }) => {
       const items = [...this.$state.items];
-
-      if (target.classList.contains("addBtn")) {
-        this.setState({ items: [...items, `item${items.length + 1}`] });
-      }
-
-      if (target.classList.contains("deleteBtn")) {
-        items.splice(target.dataset.index, 1);
-        this.setState({ items });
-      }
+      items.splice(target.dataset.index, 1);
+      this.setState({ items });
     });
   }
 }
