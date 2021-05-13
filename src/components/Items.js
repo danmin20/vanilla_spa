@@ -5,21 +5,25 @@ export default class Items extends Component {
     this.$state = { items: ["item1", "item2"] };
   }
   template() {
-    const { items } = this.$state;
+    const { filteredItems } = this.$props;
     return `
       <ul>
-        ${items
+        ${filteredItems
           .map(
-            (item, key) => `
-          <li>
-            ${item}
-            <button class="deleteBtn" data-index="${key}">삭제</button>
+            ({ contents, active, seq }) => `
+          <li data-seq="${seq}">
+            ${contents}
+            <button class="toggleBtn" style="color: ${
+              active ? "#09F" : "#F09"
+            }">
+              ${active ? "활성" : "비활성"}
+            </button>
+            <button class="deleteBtn">삭제</button>
           </li>
         `
           )
           .join("")}
       </ul>
-      <button class="addBtn">추가</button>
     `;
   }
 
@@ -52,14 +56,15 @@ export default class Items extends Component {
     // });
 
     // 이벤트 버블링 추상화된 메서드 사용
-    this.addEvent("click", ".addBtn", () => {
-      const { items } = this.$state;
-      this.setState({ items: [...items, `item${items.length + 1}`] });
-    });
+    const { deleteItem, toggleItem } = this.$props;
+
     this.addEvent("click", ".deleteBtn", ({ target }) => {
-      const items = [...this.$state.items];
-      items.splice(target.dataset.index, 1);
-      this.setState({ items });
+      console.log("asdf", target.closest("[data-seq]"));
+      deleteItem(Number(target.closest("[data-seq]").dataset.seq));
+    });
+
+    this.addEvent("click", ".toggleBtn", ({ target }) => {
+      toggleItem(Number(target.closest("[data-seq]").dataset.seq));
     });
   }
 }
