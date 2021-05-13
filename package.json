@@ -1,0 +1,10 @@
+{
+  "name": "vanilla",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "lee jeongmin <danmin20@khu.ac.kr>",
+  "license": "MIT",
+  "scripts": {
+    "start": "npx http-server"
+  }
+}
